@@ -18,11 +18,4 @@ export class UserController {
             return response.status(error.status).json(error.message);
         }
     }
-    public async find(request: Request, response: Response): Promise<Response> {
-        try {
-            return response.status(200).json();
-        } catch (error) {
-            return response.status(error.status).json(error.message);
-        }
-    }
 }
