@@ -1,4 +1,4 @@
-import { UserForm, SessionForm } from './form';
+import { UserForm } from './form';
 import { Validator } from '../helpers/validator';
 import { UserDto } from './dto/user.dto';
 import User from '../database/models/User';
@@ -17,7 +17,7 @@ export class UserService {
         
         const userCreated: User = await User.create(userForm)
 
-        const token: string = await Token.genToken(userCreated._id);
+        const token: string = await Token.genToken({ id: userCreated._id });
         
         const userDto: UserDto = new UserDto(Object.assign(userCreated, {token}));
         
@@ -32,7 +32,9 @@ export class UserService {
     }
 
     public async updateLastSignIn(user: User){
-        const userUpdated = Object.assign(user, {ultimo_login: Date.now()})
+        const token: string = await Token.genToken({id: user._id})
+
+        const userUpdated = Object.assign(user, {ultimo_login: Date.now(), token})
 
         return User.findOneAndUpdate({_id: user._id}, userUpdated).exec();
     }

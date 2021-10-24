@@ -27,7 +27,7 @@ export class UserController {
 
             if(!optionalUser)
                 return response.status(404).json({
-                    message: 'Usuário não encontrado.'
+                    mensagem: 'Usuário não encontrado.'
                 });
             return response.status(200).json(new UserDto(optionalUser));
         } catch (error) {
@@ -45,7 +45,7 @@ export class UserController {
             
             if(!optionalUser)
                 return response.status(404).json({
-                    message: 'Usuário e/ou senha inválidos.'
+                    mensagem: 'Usuário e/ou senha inválidos.'
                 });
                 
             if (!(await bcrypt.compare(sessionForm.senha, optionalUser.senha)))
@@ -56,7 +56,7 @@ export class UserController {
             const user = await userService.updateLastSignIn(optionalUser);
             
             return response.status(200).json(
-                new UserDto(Object.assign(user, {token: await Token.genToken(user._id)}))
+                new UserDto(user)
             );
         } catch (error) {
             return response.status(error.status).json(error.message);
