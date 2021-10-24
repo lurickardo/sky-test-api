@@ -26,17 +26,17 @@ const User = new mongoose.Schema({
   },
   data_criacao: {
     type: Date,
-    default: new Date(Date.now()),
+    default: Date.now(),
     required: true,
   },
   data_atualizacao: {
     type: Date,
-    default: new Date(Date.now()),
+    default: Date.now(),
     required: true,
   },
   ultimo_login: {
     type: Date,
-    default: new Date(Date.now()),
+    default: Date.now(),
     required: true,
   },
 });

@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken';
-import {Crypt} from './crypt'
 
 export class Token {
-    static async genToken(value: string ): Promise<string>{
-        const jwtToken = jwt.sign({ value }, process.env.TOKEN_KEY, {
+    static async genToken(payload: object ): Promise<string> {
+        return jwt.sign(payload, process.env.TOKEN_KEY, {
             expiresIn: process.env.TOKEN_EXPIRATE_TIME,
         });
-    
-        return Crypt.genHash(jwtToken);
+    }
+
+    static async decodeToken(token: string): Promise<any> {
+        return jwt.verify(token, process.env.TOKEN_KEY)
     }
 }
