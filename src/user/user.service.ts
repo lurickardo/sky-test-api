@@ -5,6 +5,11 @@ import User from '../database/models/User';
 import {Token} from '../helpers/token';
 
 export class UserService {
+    public async findOne(_id: string): Promise<User> | null{
+        const user: User = await User.findOne({ _id }).exec();
+        return user;
+    }
+
     public async create(userForm: UserForm): Promise<UserDto> {        
         await Validator.validate(userForm)
 

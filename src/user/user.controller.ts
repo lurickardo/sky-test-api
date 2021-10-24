@@ -10,10 +10,23 @@ export class UserController {
     public async create(request: Request, response: Response): Promise<Response> {
         try {
             const userForm: UserForm = new UserForm(request.body);
+            return response.status(201).json(await userService.create(userForm));
+        } catch (error) {
+            return response.status(error.status).json(error.message);
+        }
+    }
 
-            const userDto: UserDto = await userService.create(userForm);
+    public async find(request: Request, response: Response): Promise<Response> {
+        try {
+            const _id: string = request.params._id;
 
-            return response.status(201).json(userDto);
+            const optionalUser = await userService.findOne(_id)
+
+            if(!optionalUser)
+                return response.status(404).json({
+                    message: 'Usuário não encontrado.'
+                });
+            return response.status(200).json(new UserDto(optionalUser));
         } catch (error) {
             return response.status(error.status).json(error.message);
         }
