@@ -5,7 +5,7 @@ const routes = Router();
 
 routes.use('/api/', userRoutes);
 routes.use((_: Request, response: Response) => {
-    response.send(404).json({
+    response.sendStatus(404).json({
         mensagem: "Rota não encontrada"
     });
 });
