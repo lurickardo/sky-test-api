@@ -1,4 +1,4 @@
-import { UserForm } from './form/user.form';
+import { UserForm, SessionForm } from './form';
 import { Validator } from '../helpers/validator';
 import { UserDto } from './dto/user.dto';
 import User from '../database/models/User';
@@ -21,8 +21,19 @@ export class UserService {
         
         const userDto: UserDto = new UserDto(Object.assign(userCreated, {token}));
         
-        await User.findOneAndUpdate({_id: userCreated._id}, userDto);
+        await User.findOneAndUpdate({_id: userCreated._id}, userDto).exec();
         
         return userDto;
+    }
+
+    public async findByEmail(email: string): Promise<User> | null {
+        const user: User = await User.findOne({ email }).exec();
+        return user;
+    }
+
+    public async updateLastSignIn(user: User){
+        const userUpdated = Object.assign(user, {ultimo_login: Date.now()})
+
+        return User.findOneAndUpdate({_id: user._id}, userUpdated).exec();
     }
 }
