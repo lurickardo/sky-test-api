@@ -10,14 +10,14 @@ export class UserService {
 
         await userForm.hashPassword();
         
-        const userCreated = await User.create(userForm)
+        const userCreated: User = await User.create(userForm)
 
         const token: string = await Token.genToken(userCreated._id);
         
         const userDto: UserDto = new UserDto(Object.assign(userCreated, {token}));
         
-        User.updateOne(userCreated._id, {userDto});
-
+        await User.findOneAndUpdate({_id: userCreated._id}, userDto);
+        
         return userDto;
     }
 }

@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-
 const User = new mongoose.Schema({
-  _id: {
+  _id: { 
     type: String,
-    default: () => {
-      return uuidv4()
-    },
-    required: true,
+    default: uuidv4
   },
   token: {
     type: String,
