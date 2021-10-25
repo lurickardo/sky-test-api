@@ -1,43 +1,38 @@
 import { Request, Response } from 'express';
+import { HttpStatusException } from '../config/error/HttpStatusException';
 import { Token } from '../helpers/token';
 import User from '../database/models/User';
-import { TokenExpiredError } from 'jsonwebtoken';
 
 export class UserMiddleware {
-    async auth(request: Request, response: Response, next) {
-      try {
-        const auth = request.headers.authorization;
-          
-          if (!auth)
-            return response.status(401).json({ mensagem: 'Não autorizado.' });
-          
-          const [bearer, token] = auth.split(' ');
-          
-          if (bearer != 'Bearer' || !token) 
-            return response.status(401).json({ mensagem: 'Não autorizado.' });
-    
-          const payload = await Token.decodeToken(token);
+  async auth(request: Request, response: Response, next) {
+    try {
+      const auth = request.headers.authorization;
 
-          const _id: string = request.params._id;
-          const optionalUser = await User.findOne({ _id }).exec();
-          
-          if(!optionalUser)
-            return response.status(404).json({
-                mensagem: 'Usuário não encontrado.'
-            });
+      if (!auth) { throw new HttpStatusException('Não autorizado.', 401); }
 
-          if(payload.id != optionalUser._id)
-            return response.status(404).json({
-              mensagem: 'Não autorizado.'
-            });
-    
-          return next();
-      } catch (error) {
-        if(error.constructor.name === 'TokenExpiredError')
-          return response.status(404).json({
-            mensagem: 'Sessão inválida.'
-          });
-        return response.status(error.status).json(error.message);
+      const [bearer, token] = auth.split(' ');
+
+      if (bearer !== 'Bearer' || !token) { throw new HttpStatusException('Não autorizado.', 401); }
+
+      const { id: idToken } = await Token.decodeToken(token);
+
+      const { _id } = request.params;
+
+      if (idToken !== _id) { throw new HttpStatusException('Não autorizado.', 401); }
+
+      const optionalUser = await User.findOne({ _id }).exec();
+
+      if (!optionalUser) {
+        throw new HttpStatusException('Usuário não encontrado.', 404);
       }
+
+      if (token !== optionalUser.token) {
+        throw new HttpStatusException('Não autorizado.', 401);
+      }
+
+      return next();
+    } catch (error) {
+      return response.status(error.status).json(error.message);
     }
+  }
 }

@@ -5,15 +5,12 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import User from '../database/models/User'
+import User from '../database/models/User';
 
 @ValidatorConstraint({ async: true })
 export class UserExistsConstraint implements ValidatorConstraintInterface {
-
   async validate(email: string): Promise<boolean> {
-      return User.find().where({ email }).then((data: User[]) => { 
-        return !data.length;
-      })
+    return User.find().where({ email }).then((data: User[]) => !data.length);
   }
 
   defaultMessage?(validationArguments: ValidationArguments): string {
@@ -22,11 +19,11 @@ export class UserExistsConstraint implements ValidatorConstraintInterface {
 }
 
 export function UserExists(validationOptions?: ValidationOptions) {
-  return function (object: unknown, propertyName: string) {
+  return (object: unknown, propertyName: string) => {
     registerDecorator({
       name: 'UserExists',
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       validator: UserExistsConstraint,
     });
