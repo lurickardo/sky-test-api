@@ -15,7 +15,7 @@ async function main() {
     console.clear();
 
     console.log('\x1b[33m- Starting servers...');
-    app.listen(process.env.SERVER_PORT, () => {
+    app.listen(process.env.SERVER_PORT || 3000, () => {
       console.log('\x1b[32m- Server express started! \x1b[0m');
     }).on('error', (error) => {
       console.log(`\x1b[31m- Error connecting to Express server: ${error} \x1b[0m`);
