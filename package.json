@@ -6,7 +6,8 @@
   "author": "Luiz Ricardo Soares dos Santos <luizr726@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts"
+    "start:dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+    "start:prod": "ts-node --transpile-only src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -27,8 +28,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^2.4.1",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.4.4"
+    "ts-node-dev": "^1.1.8"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -37,6 +37,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4",
     "uuid": "^8.3.2"
   }
 }
