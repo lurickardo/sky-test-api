@@ -6,8 +6,9 @@
   "author": "Luiz Ricardo Soares dos Santos <luizr726@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "start:dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-    "start:prod": "ts-node --transpile-only src/server.ts"
+    "start:prod": "node dist/server.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
