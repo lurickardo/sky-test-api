@@ -32,6 +32,38 @@ API RESTful com criação de sign up/in de usuário com autenticação JWT.
 - Execute o projeto com o comando:
 `yarn start:dev`
 
+## Rotas
+- SignUp
+`curl --request POST \
+  --url http://sky-test-api.herokuapp.com/api/signup \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"nome": "luiz",
+	"email": "luiz@gmail.com",
+	"senha": "abc1234",
+	"telefones": [
+		{
+			"numero": 111111111,
+			"ddd": 11
+		}
+	]
+}'`
+
+- SignIn
+`curl --request PATCH \
+  --url http://sky-test-api.herokuapp.com/api/signin \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email": "luiz@gmail.com",
+	"senha": "abc1234"
+}'`
+
+- Busca usuário:
+`curl --request GET \
+  --url http://sky-test-api.herokuapp.com/api/users/db35b339-5fb4-4a8b-acc5-eec8e86b79cb \
+  --header 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRiMzViMzM5LTVmYjQtNGE4Yi1hY2M1LWVlYzhlODZiNzljYiIsImlhdCI6MTYzNTIxMjI3NSwiZXhwIjoxNjM1MjE0MDc1fQ.xlXGBv5hcGfu4qQeN5rVONlH_W02dKBJ3Hlppm5-YNA'`
+
+
 ## Funcionalidades realizadas
 - Criação de usuario com persistencia de dados e token;
 - Login com atualização de token e data de ultimo login;
